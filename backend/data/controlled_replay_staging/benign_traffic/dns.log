@@ -1,0 +1,11 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	ttls	rejected
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool
+1724832000.000000	D000000	192.168.1.100	54321	8.8.8.8	53	udp	1000	0.005000	google.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.020000	D000001	8.8.8.8	53	192.168.1.100	54321	udp	1001	0.005000	google.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	google.com	300.0	F
+#close	2026-08-28-16-00-05

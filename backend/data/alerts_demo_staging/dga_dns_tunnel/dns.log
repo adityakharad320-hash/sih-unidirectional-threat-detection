@@ -1,0 +1,13 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	ttls	rejected
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool
+1724832000.000000	D000000	192.168.1.75	44834	8.8.8.8	53	udp	1000	0.005000	xq89zlkj4v91a0c8.badc2.org	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.020000	D000001	192.168.1.75	51937	8.8.8.8	53	udp	1001	0.005000	m9a1c77f02d948ea.xyz	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.040000	D000002	192.168.1.75	44790	8.8.8.8	53	udp	1002	0.005000	dGVzdF9leGZpbHRyYXRpb25fZGF0YQ.tunnel.net	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.060000	D000003	192.168.1.75	51696	8.8.8.8	53	udp	1003	0.005000	3a7f8e1b2c4d9a0f.cc	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+#close	2026-08-28-16-00-05

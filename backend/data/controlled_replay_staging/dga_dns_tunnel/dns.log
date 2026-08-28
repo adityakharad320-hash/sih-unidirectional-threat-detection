@@ -1,0 +1,13 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	ttls	rejected
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool
+1724832000.000000	D000000	192.168.1.75	50000	8.8.8.8	53	udp	1000	0.005000	v8x9a2k1z7q3m5p8.tunnel.corp.internal	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.250000	D000001	192.168.1.75	50001	8.8.8.8	53	udp	1001	0.005000	b3m7x9q1z8k2v5p4.exfil.data.security	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.500000	D000002	192.168.1.75	50002	8.8.8.8	53	udp	1002	0.005000	q1w2e3r4t5y6u7i8.covert.channel.net	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.750000	D000003	192.168.1.75	50003	8.8.8.8	53	udp	1003	0.005000	z9y8x7w6v5u4t3s2.dga.malware.beacon	1	C_INTERNET	1	TXT	0	NOERROR	F	F	T	T	0	-	300.0	F
+#close	2026-08-28-16-00-05

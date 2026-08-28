@@ -1,0 +1,10 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	ssl
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	cipher	curve	server_name	resumed	last_alert	next_protocol	established	cert_chain_fuids	client_cert_chain_fuids	subject	issuer	client_subject	client_issuer	san.dns	san.uri	san.email	san.ip	valid_ct	ja3	ja3s
+#types	time	string	addr	port	addr	port	string	string	string	string	bool	string	string	bool	vector[string]	vector[string]	string	string	string	string	vector[string]	vector[string]	vector[string]	vector[addr]	count	string	string
+1724832000.100000	S000000	192.168.1.100	50004	142.250.190.46	443	TLSv1.3	TLS_AES_128_GCM_SHA256	-	google.com	F	-	-	T	-	-	CN=google.com	CN=DigiCert	-	-	-	-	-	-	-	-	-
+#close	2026-08-28-16-00-05

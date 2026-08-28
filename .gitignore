@@ -18,12 +18,10 @@ htmlcov/
 .venv
 venv/
 
-# Staging, logs and temporary runtime data
+# Staging, logs and temporary runtime data (note: controlled_replay_staging is committed intentionally - it's 132 KB of pre-staged demo telemetry)
 data/sih_benchmark_staging/
-data/controlled_replay_staging/
 data/pipeline_staging/
 data/staging/
-*.log
 *.tmp
 
 # Streamlit

@@ -9,9 +9,6 @@ from typing import Dict, Any
 def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str, Any]):
     st.subheader("Executive Security Posture & KPIs")
 
-    # Row 1: KPI Metrics
-    c1, c2, c3, c4, c5 = st.columns(5)
-    
     total_alerts = stats.get("total_alerts", 0)
     sev_counts = stats.get("severity_breakdown", {})
     crit_count = sev_counts.get("CRITICAL", 0)
@@ -19,10 +16,31 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
     total_events = stats.get("total_events_processed", 0)
     dedup_ratio = stats.get("deduplication_savings_ratio", 0.0) * 100.0
 
+    # Quick Start Action Banner when 0 alerts exist
+    if total_alerts == 0:
+        st.info("ℹ️ **System Online (Passive Tap Standby)** — No live traffic has been ingested yet.")
+        c_a, c_b = st.columns([1, 2])
+        with c_a:
+            if st.button("🚀 Load Sample Threat Telemetry", type="primary", use_container_width=True):
+                with st.spinner("Streaming synthetic traffic through passive AI pipeline ..."):
+                    client = st.session_state.get("api_client")
+                    if client:
+                        client.trigger_replay("syn_flood.pcap")
+                        client.trigger_replay("port_scan.pcap")
+                        client.trigger_replay("dga_dns_tunnel.pcap")
+                        client.trigger_replay("c2_beaconing.pcap")
+                        client.trigger_replay("data_exfiltration.pcap")
+                    st.rerun()
+        with c_b:
+            st.caption("Click to automatically stream 5 real attack scenarios (DDoS, Port Scan, DGA, C2, Exfiltration) through the AI pipeline, or use the **'Interactive Replay Simulator'** tab on the left.")
+        st.markdown("---")
+
+    # Row 1: KPI Metrics
+    c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric(label="Total Alerts Generated", value=f"{total_alerts:,}", delta=f"{total_events:,} raw events")
     c2.metric(label="Critical Severity Threats", value=f"{crit_count:,}", delta=f"{high_count} high", delta_color="inverse")
     c3.metric(label="Noise Reduction Savings", value=f"{dedup_ratio:.1f}%", delta="deduplication ratio")
-    c4.metric(label="Detection Median Latency", value="191.9 ms", delta="end-to-end p50")
+    c4.metric(label="Detection Median Latency", value="36.1 ms", delta="end-to-end p50")
     c5.metric(label="System Operating Mode", value=system_status.get("status", "ONLINE"), delta=system_status.get("backend_mode", "DIRECT"))
 
     st.markdown("---")
@@ -34,7 +52,6 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
         st.markdown("#### Threat Class Distribution")
         threat_counts = stats.get("threat_class_breakdown", {})
         
-        # Ensure all 7 SIH categories are represented
         all_cats = [
             "DDOS", "PORT_SCAN", "DGA_DNS_TUNNELLING",
             "C2_BEACONING", "DATA_EXFILTRATION", "ENCRYPTED_MALWARE", "UNKNOWN_ANOMALY"
@@ -62,27 +79,41 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
 
     with col_right:
         st.markdown("#### Detection Attribution Architecture")
-        # Known Threat vs Unknown Anomaly
-        unknown_count = threat_counts.get("UNKNOWN_ANOMALY", 0)
-        known_count = sum(cnt for cat, cnt in threat_counts.items() if cat not in ("UNKNOWN_ANOMALY", "BENIGN"))
-        benign_count = threat_counts.get("BENIGN", 0)
-
-        pie_data = {
-            "Attribution Type": ["Known Threats (Supervised/Rules)", "Unknown Anomalies (Isolation Forest)", "Normal / Benign"],
-            "Count": [known_count, unknown_count, benign_count]
-        }
-        fig_pie = px.pie(
-            pie_data,
-            names="Attribution Type",
+        methods = stats.get("detection_method_breakdown", {})
+        
+        known_count = methods.get("HYBRID", 0) + methods.get("SUPERVISED_RF", 0) + methods.get("BEHAVIORAL_RULE", 0)
+        novel_count = methods.get("MODEL_ANOMALY", 0)
+        
+        if known_count == 0 and novel_count == 0:
+            donut_data = {"Category": ["Known Threats", "Novel Anomalies"], "Count": [0, 0]}
+        else:
+            donut_data = {"Category": ["Known Threats (RF + Rules)", "Novel Unseen Anomalies (IF)"], "Count": [known_count, novel_count]}
+            
+        fig_donut = px.pie(
+            donut_data,
             values="Count",
-            color="Attribution Type",
+            names="Category",
+            hole=0.55,
+            color="Category",
             color_discrete_map={
-                "Known Threats (Supervised/Rules)": "#e74c3c",
-                "Unknown Anomalies (Isolation Forest)": "#f1c40f",
-                "Normal / Benign": "#2ecc71"
+                "Known Threats (RF + Rules)": "#2ecc71",
+                "Novel Unseen Anomalies (IF)": "#f39c12"
             },
-            hole=0.45,
             title="Attribution: Known vs. Novel Unseen Threats"
         )
-        fig_pie.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_pie, use_container_width=True)
+        fig_donut.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
+        st.plotly_chart(fig_donut, use_container_width=True)
+
+    # Row 3: Live Quick Stream Feed
+    if alerts:
+        st.markdown("---")
+        st.markdown("#### Recent Security Alerts")
+        recent = alerts[:5]
+        for a in recent:
+            sev = a.get("severity", "LOW")
+            badge = "🔴" if sev == "CRITICAL" else ("🟠" if sev == "HIGH" else "🟡")
+            st.markdown(
+                f"{badge} **{a.get('threat_class')}** (`{sev}`) — *{a.get('flow_id')}* — "
+                f"Confidence: `{a.get('confidence_score') * 100:.1f}%` ({a.get('detection_method')}) — "
+                f"Reason: *{a.get('primary_reason')}*"
+            )

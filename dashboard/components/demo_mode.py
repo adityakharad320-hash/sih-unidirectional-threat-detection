@@ -17,6 +17,7 @@ def render_demo_mode(api_client):
         "Vertical Port Scanning Probe": ("port_scan.pcap", "100 single-SYN connection attempts probing ports 1-100 on target 192.168.1.1"),
         "DNS Tunnelling & DGA Queries": ("dga_dns_tunnel.pcap", "High-entropy algorithmic TXT record requests to recursive resolver 8.8.8.8"),
         "C2 Cobalt Strike Beaconing":   ("c2_beaconing.pcap", "Periodic 1.0s interval TCP PSH-ACK heartbeats to external C2 server"),
+        "Data Exfiltration Channel":    ("data_exfiltration.pcap", "High-volume asymmetric outbound data upload (57x upload ratio)"),
         "Normal Benign Web Browsing":   ("benign_traffic.pcap", "Clean multi-session DNS and HTTPS TLS web browsing")
     }
 
@@ -28,11 +29,16 @@ def render_demo_mode(api_client):
         st.caption(f"**Description**: {description}")
         st.caption(f"**Target Sample**: `{pcap_file}`")
 
-        if st.button("Launch Streaming Replay", type="primary", use_container_width=True):
+        if st.button("🚀 Launch Streaming Replay", type="primary", use_container_width=True):
             with st.spinner(f"Replaying {pcap_file} through passive AI pipeline ..."):
                 res = api_client.trigger_replay(pcap_file)
                 st.session_state["last_replay_result"] = res
-                st.success(f"Replay executed! Status: {res.get('status')}")
+                st.session_state["last_replayed_pcap"] = pcap_file
+                if res.get("status") == "COMPLETED":
+                    st.success(f"✅ Replay completed! Live alerts generated into dashboard.")
+                else:
+                    st.warning(f"Status: {res.get('status')} — {res.get('message')}")
+                st.rerun()
 
     with col2:
         st.markdown("#### Live Replay Execution Telemetry")

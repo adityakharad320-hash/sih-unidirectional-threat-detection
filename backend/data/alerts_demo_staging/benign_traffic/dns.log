@@ -1,0 +1,17 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	ttls	rejected
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool
+1724832000.000000	D000000	192.168.1.100	58953	8.8.8.8	53	udp	1000	0.005000	google.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.050000	D000001	8.8.8.8	53	192.168.1.100	58953	udp	1001	0.005000	google.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	google.com	300.0	F
+1724832000.070000	D000002	192.168.1.100	46369	8.8.8.8	53	udp	1002	0.005000	github.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.120000	D000003	8.8.8.8	53	192.168.1.100	46369	udp	1003	0.005000	github.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	github.com	300.0	F
+1724832000.140000	D000004	192.168.1.100	48826	8.8.8.8	53	udp	1004	0.005000	microsoft.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.190000	D000005	8.8.8.8	53	192.168.1.100	48826	udp	1005	0.005000	microsoft.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	microsoft.com	300.0	F
+1724832000.210000	D000006	192.168.1.100	56026	8.8.8.8	53	udp	1006	0.005000	wikipedia.org	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	-	300.0	F
+1724832000.260000	D000007	8.8.8.8	53	192.168.1.100	56026	udp	1007	0.005000	wikipedia.org	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	wikipedia.org	300.0	F
+#close	2026-08-28-16-00-05

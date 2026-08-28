@@ -45,7 +45,11 @@ except ImportError:
 
 # Initialize API Client
 if "api_client" not in st.session_state:
-    st.session_state["api_client"] = DashboardApiClient()
+    client = DashboardApiClient()
+    # Auto-preload demonstration telemetry on initial visit so the dashboard is live
+    if client.get_statistics().get("total_alerts", 0) == 0:
+        client.load_demo_scenarios()
+    st.session_state["api_client"] = client
 
 api_client = st.session_state["api_client"]
 
@@ -74,10 +78,9 @@ if st.sidebar.button("🔄 Force Refresh Data", use_container_width=True):
     st.rerun()
 
 # Data Ingestion
-with st.spinner("Fetching real-time security events..."):
-    stats = api_client.get_statistics()
-    alerts = api_client.get_alerts(limit=500)
-    system_status = api_client.get_system_status()
+stats = api_client.get_statistics()
+alerts = api_client.get_alerts(limit=500)
+system_status = api_client.get_system_status()
 
 # Route Views
 if view_selection == "Executive Overview":

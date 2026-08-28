@@ -1,0 +1,22 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	conn
+#open	2026-08-28-16-00-00
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	local_resp	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents
+#types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	bool	bool	count	string	count	count	count	count	set[string]
+1724832000.000000	C436254	192.168.1.100	58953	8.8.8.8	53	udp	dns	0.000100	70	0	SF	-	-	0	ShADdFaf	1	70	0	0	(empty)
+1724832000.050000	C384096	8.8.8.8	53	192.168.1.100	58953	udp	dns	0.000100	96	0	SF	-	-	0	ShADdFaf	1	96	0	0	(empty)
+1724832000.070000	C587622	192.168.1.100	46369	8.8.8.8	53	udp	dns	0.000100	70	0	SF	-	-	0	ShADdFaf	1	70	0	0	(empty)
+1724832000.120000	C639836	8.8.8.8	53	192.168.1.100	46369	udp	dns	0.000100	96	0	SF	-	-	0	ShADdFaf	1	96	0	0	(empty)
+1724832000.140000	C684148	192.168.1.100	48826	8.8.8.8	53	udp	dns	0.000100	73	0	SF	-	-	0	ShADdFaf	1	73	0	0	(empty)
+1724832000.190000	C255134	8.8.8.8	53	192.168.1.100	48826	udp	dns	0.000100	102	0	SF	-	-	0	ShADdFaf	1	102	0	0	(empty)
+1724832000.210000	C735049	192.168.1.100	56026	8.8.8.8	53	udp	dns	0.000100	73	0	SF	-	-	0	ShADdFaf	1	73	0	0	(empty)
+1724832000.260000	C435027	8.8.8.8	53	192.168.1.100	56026	udp	dns	0.000100	102	0	SF	-	-	0	ShADdFaf	1	102	0	0	(empty)
+1724832000.280000	C201839	192.168.1.100	50000	142.250.190.46	443	tcp	ssl	0.010000	137	0	SF	-	-	0	S	2	137	0	0	(empty)
+1724832000.340000	C631742	192.168.1.100	50001	142.250.190.46	443	tcp	ssl	0.010000	137	0	SF	-	-	0	S	2	137	0	0	(empty)
+1724832000.400000	C299380	192.168.1.100	50002	142.250.190.46	443	tcp	ssl	0.010000	137	0	SF	-	-	0	S	2	137	0	0	(empty)
+1724832000.460000	C157418	192.168.1.100	50003	142.250.190.46	443	tcp	ssl	0.010000	137	0	SF	-	-	0	S	2	137	0	0	(empty)
+1724832000.520000	C216565	192.168.1.100	50004	142.250.190.46	443	tcp	ssl	0.009999	137	0	SF	-	-	0	S	2	137	0	0	(empty)
+#close	2026-08-28-16-00-05
