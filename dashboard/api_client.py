@@ -13,11 +13,13 @@ backend_dir = Path(__file__).resolve().parent.parent / "backend"
 if str(backend_dir) not in sys.path:
     sys.path.insert(0, str(backend_dir))
 
+import os
+
 logger = logging.getLogger("dashboard_client")
 
 class DashboardApiClient:
-    def __init__(self, base_url: str = "http://localhost:8000"):
-        self.base_url = base_url
+    def __init__(self, base_url: Optional[str] = None):
+        self.base_url = base_url or os.getenv("BACKEND_API_URL", "http://localhost:8000")
         self._direct_engine = None
         self._direct_orchestrator = None
         self._init_in_process_fallback()
