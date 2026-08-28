@@ -1,0 +1,77 @@
+{
+  "feature_names": [
+    "packet_rate",
+    "byte_rate",
+    "syn_ratio",
+    "ack_ratio",
+    "rst_ratio",
+    "fin_ratio",
+    "syn_ack_ratio",
+    "src_ip_entropy",
+    "unique_src_ips",
+    "unique_dst_ports",
+    "unique_dst_hosts",
+    "dst_port_fanout",
+    "dst_host_fanout",
+    "connection_attempt_rate",
+    "iat_mean",
+    "iat_std",
+    "iat_cv",
+    "iat_skewness",
+    "fft_peak_magnitude",
+    "autocorr_max_peak",
+    "dns_query_len_mean",
+    "dns_entropy_mean",
+    "dns_txt_record_ratio",
+    "dns_consonant_ratio",
+    "dns_digit_ratio",
+    "dns_ngram_score",
+    "pkt_size_mean",
+    "pkt_size_std",
+    "pkt_size_entropy",
+    "has_tls_sni",
+    "outbound_bytes_total",
+    "byte_velocity",
+    "flow_duration_sec"
+  ],
+  "label_map": {
+    "benign": 0,
+    "port_scan": 1,
+    "syn_flood": 2
+  },
+  "model_version": "v1.0",
+  "model_name": "xgboost",
+  "timestamp": "20260828T113019Z",
+  "cv_accuracy_mean": 0.9951086232173797,
+  "cv_f1_mean": 0.9940368740613138,
+  "trainable_classes": [
+    "benign",
+    "port_scan",
+    "syn_flood"
+  ],
+  "audit_report": {
+    "total_flows": 618,
+    "class_counts": {
+      "benign": 13,
+      "syn_flood": 500,
+      "port_scan": 100,
+      "dns_dga": 4,
+      "c2_beacon": 1
+    },
+    "trainable_classes": {
+      "benign": 13,
+      "syn_flood": 500,
+      "port_scan": 100
+    },
+    "heuristic_only_classes": {
+      "dns_dga": 4,
+      "c2_beacon": 1
+    },
+    "unsupported_classes": [
+      "exfiltration"
+    ],
+    "duplicates_dropped": 0,
+    "samples_for_training": 613,
+    "feature_count": 33
+  }
+}

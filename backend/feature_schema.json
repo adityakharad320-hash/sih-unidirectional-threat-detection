@@ -1,0 +1,551 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TelemetryFeatureVector_v2",
+  "description": "Production network feature schema extracted from Zeek and Suricata telemetry.",
+  "version": "2.0.0",
+  "total_features": 54,
+  "feature_names": [
+    "packet_rate",
+    "byte_rate",
+    "syn_rate",
+    "syn_ratio",
+    "ack_ratio",
+    "rst_ratio",
+    "udp_rate",
+    "unique_src_count",
+    "src_ip_entropy",
+    "dest_concentration",
+    "byte_amplification_ratio",
+    "iat_min",
+    "iat_max",
+    "iat_mean",
+    "iat_std",
+    "iat_cv",
+    "periodicity_score",
+    "repeated_dst_freq",
+    "flow_duration",
+    "repeated_conn_count",
+    "query_len_mean",
+    "shannon_entropy_mean",
+    "vowel_ratio",
+    "consonant_ratio",
+    "digit_ratio",
+    "unique_char_ratio",
+    "subdomain_depth_mean",
+    "query_frequency",
+    "txt_record_ratio",
+    "ngram_log_likelihood",
+    "tls_version_num",
+    "has_tls_sni",
+    "ja3_present",
+    "pkt_size_mean",
+    "pkt_size_std",
+    "pkt_size_entropy",
+    "directionality_ratio",
+    "unique_dst_ports",
+    "unique_dst_hosts",
+    "dst_port_fanout",
+    "dst_host_fanout",
+    "conn_attempts",
+    "conn_attempt_rate",
+    "failed_conn_ratio",
+    "inbound_bytes",
+    "outbound_bytes",
+    "out_in_byte_ratio",
+    "bytes_per_flow",
+    "outbound_rate",
+    "asymmetric_traffic_score",
+    "src_out_degree",
+    "dst_in_degree",
+    "comm_partner_count",
+    "graph_fanout_ratio"
+  ],
+  "features": [
+    {
+      "name": "packet_rate",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Packets transmitted per second in active flow window",
+      "calculation": "(orig_pkts + resp_pkts) / max(1e-3, duration)",
+      "window": "flow_window (1.0s - 30.0s)",
+      "threat_relevance": "Massive packet spikes signify volumetric DDoS floods."
+    },
+    {
+      "name": "byte_rate",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Bytes transmitted per second in active flow window",
+      "calculation": "(orig_bytes + resp_bytes) / max(1e-3, duration)",
+      "window": "flow_window (1.0s - 30.0s)",
+      "threat_relevance": "High bandwidth consumption indicates pipe-saturating flood attacks."
+    },
+    {
+      "name": "syn_rate",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Initial SYN attempt rate per second",
+      "calculation": "syn_count / max(1e-3, duration)",
+      "window": "flow_window",
+      "threat_relevance": "High SYN rates mark aggressive SYN flood attacks."
+    },
+    {
+      "name": "syn_ratio",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Ratio of SYN packets to total flow packets",
+      "calculation": "syn_packets / max(1, total_packets)",
+      "window": "flow_window",
+      "threat_relevance": "Approaches 1.0 during unidirectional SYN flood attacks."
+    },
+    {
+      "name": "ack_ratio",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Ratio of ACK packets to total flow packets",
+      "calculation": "ack_packets / max(1, total_packets)",
+      "window": "flow_window",
+      "threat_relevance": "Low in SYN floods; elevated in ACK reflection attacks."
+    },
+    {
+      "name": "rst_ratio",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Ratio of RST packets to total flow packets",
+      "calculation": "rst_packets / max(1, total_packets)",
+      "window": "flow_window",
+      "threat_relevance": "Elevated in scanner teardowns and connection termination storms."
+    },
+    {
+      "name": "udp_rate",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "UDP packet transmission rate per second",
+      "calculation": "udp_pkts / max(1e-3, duration) if protocol == 'UDP' else 0.0",
+      "window": "flow_window",
+      "threat_relevance": "Surges indicate UDP reflection/amplification floods (NTP, DNS, CLDAP)."
+    },
+    {
+      "name": "unique_src_count",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Unique source IPs contacting target destination in window",
+      "calculation": "count(distinct(src_ips)) targeting dst_ip in window",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Distinguishes single-source floods from distributed botnet attacks."
+    },
+    {
+      "name": "src_ip_entropy",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Shannon entropy of source IPs targeting destination",
+      "calculation": "-sum(p_i * log2(p_i)) over src_ip distribution",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "High entropy signifies heavily distributed spoofed-source DDoS."
+    },
+    {
+      "name": "dest_concentration",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Fraction of all network packets directed at this single destination",
+      "calculation": "dst_packets / max(1, total_network_packets)",
+      "window": "sliding_global_window (30.0s)",
+      "threat_relevance": "High concentration reveals targeted victim host under heavy flood."
+    },
+    {
+      "name": "byte_amplification_ratio",
+      "datatype": "float64",
+      "category": "DDoS",
+      "meaning": "Ratio of response bytes to origin request bytes",
+      "calculation": "resp_bytes / max(1.0, orig_bytes)",
+      "window": "flow_window",
+      "threat_relevance": "Values >> 10 signify active UDP reflection/amplification."
+    },
+    {
+      "name": "iat_min",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Minimum inter-arrival time between consecutive connections",
+      "calculation": "min(diff(timestamps))",
+      "window": "flow_history (up to 1000 events)",
+      "threat_relevance": "Identifies rigid timing floors in botnet polling intervals."
+    },
+    {
+      "name": "iat_max",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Maximum inter-arrival time between consecutive connections",
+      "calculation": "max(diff(timestamps))",
+      "window": "flow_history",
+      "threat_relevance": "Assesses upper bound of sleep/wake cycles."
+    },
+    {
+      "name": "iat_mean",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Mean packet/connection inter-arrival time in seconds",
+      "calculation": "mean(diff(timestamps))",
+      "window": "flow_history",
+      "threat_relevance": "Establishes base heartbeat interval of malware beaconing."
+    },
+    {
+      "name": "iat_std",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Standard deviation of inter-arrival times",
+      "calculation": "std(diff(timestamps))",
+      "window": "flow_history",
+      "threat_relevance": "Ultra-low variance indicates non-human automated heartbeat."
+    },
+    {
+      "name": "iat_cv",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Coefficient of Variation of IAT (Jitter Metric)",
+      "calculation": "iat_std / max(1e-5, iat_mean)",
+      "window": "flow_history",
+      "threat_relevance": "Values < 0.15 strongly signify rigid C2 framework beaconing."
+    },
+    {
+      "name": "periodicity_score",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Dominant FFT spectral power peak fraction",
+      "calculation": "max(abs(fft(centered_iats))) / sum(abs(fft))",
+      "window": "flow_history",
+      "threat_relevance": "Detects periodic beaconing even when jitter is added."
+    },
+    {
+      "name": "repeated_dst_freq",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Connection frequency to this specific external endpoint per minute",
+      "calculation": "flow_count_to_dst / (window_duration / 60.0)",
+      "window": "sliding_host_window (300.0s)",
+      "threat_relevance": "Repeated persistent check-ins to identical C2 servers."
+    },
+    {
+      "name": "flow_duration",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Total active duration of the connection in seconds",
+      "calculation": "last_seen_ts - first_seen_ts",
+      "window": "flow_window",
+      "threat_relevance": "Short, recurring bursts characterize classic HTTP/TLS beacons."
+    },
+    {
+      "name": "repeated_conn_count",
+      "datatype": "float64",
+      "category": "C2 Beaconing",
+      "meaning": "Total number of discrete connection sessions established to same endpoint",
+      "calculation": "count(flows_between_pair)",
+      "window": "sliding_host_window (300.0s)",
+      "threat_relevance": "High session repetition without user interaction indicates malware."
+    },
+    {
+      "name": "query_len_mean",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Average character length of requested DNS domain names",
+      "calculation": "mean(len(query_domain))",
+      "window": "dns_buffer (last 100 queries)",
+      "threat_relevance": "Significantly elevated in DNS data exfiltration tunnels."
+    },
+    {
+      "name": "shannon_entropy_mean",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Average Shannon character entropy of requested domain names",
+      "calculation": "-sum(p_c * log2(p_c)) over domain characters",
+      "window": "dns_buffer",
+      "threat_relevance": "Values > 3.8 reveal pseudo-random algorithmic DGAs."
+    },
+    {
+      "name": "vowel_ratio",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Proportion of vowel characters (a,e,i,o,u) in domain name",
+      "calculation": "vowel_count / max(1, letter_count)",
+      "window": "dns_buffer",
+      "threat_relevance": "Abnormal vowel density flags non-natural algorithmic domain names."
+    },
+    {
+      "name": "consonant_ratio",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Proportion of consonant characters in domain name",
+      "calculation": "consonant_count / max(1, letter_count)",
+      "window": "dns_buffer",
+      "threat_relevance": "Heavy consonant clustering is a classic signature of DGAs."
+    },
+    {
+      "name": "digit_ratio",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Proportion of numerical digits in domain name",
+      "calculation": "digit_count / max(1, len(domain))",
+      "window": "dns_buffer",
+      "threat_relevance": "Hex/Base32 encoded subdomains exhibit heavy digit counts."
+    },
+    {
+      "name": "unique_char_ratio",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Ratio of unique characters to total domain length",
+      "calculation": "len(set(domain)) / max(1, len(domain))",
+      "window": "dns_buffer",
+      "threat_relevance": "High uniqueness indicates random high-entropy strings."
+    },
+    {
+      "name": "subdomain_depth_mean",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Average number of subdomain labels in DNS query",
+      "calculation": "mean(count('.') in domain)",
+      "window": "dns_buffer",
+      "threat_relevance": "DNS tunnelling uses deep nested subdomains for data chunks."
+    },
+    {
+      "name": "query_frequency",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "DNS queries per second from source host",
+      "calculation": "dns_queries / max(1e-3, window_duration)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Rapid query bursts indicate automated DGA resolution sweeps."
+    },
+    {
+      "name": "txt_record_ratio",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Proportion of DNS queries requesting TXT or NULL records",
+      "calculation": "txt_queries / max(1, total_dns_queries)",
+      "window": "dns_buffer",
+      "threat_relevance": "Heavy TXT querying signifies DNS tunnel command & exfil channels."
+    },
+    {
+      "name": "ngram_log_likelihood",
+      "datatype": "float64",
+      "category": "DGA / DNS Tunnelling",
+      "meaning": "Bi-gram log-likelihood score against baseline English language corpus",
+      "calculation": "mean(log P(c_i, c_i+1))",
+      "window": "dns_buffer",
+      "threat_relevance": "Low scores identify unpronounceable algorithmic domains."
+    },
+    {
+      "name": "tls_version_num",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Numeric encoding of negotiated TLS version (e.g. 1.2, 1.3, 0.0 if missing)",
+      "calculation": "1.3 if TLSv1.3 else (1.2 if TLSv1.2 else 0.0)",
+      "window": "flow_window",
+      "threat_relevance": "Identifies legacy or anomalous TLS versions."
+    },
+    {
+      "name": "has_tls_sni",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Binary indicator for presence of Server Name Indication in ClientHello",
+      "calculation": "1.0 if sni is present else 0.0",
+      "window": "flow_window",
+      "threat_relevance": "Direct IP connection without SNI on 443 often marks raw malware C2."
+    },
+    {
+      "name": "ja3_present",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Binary indicator of whether client JA3 fingerprint is available",
+      "calculation": "1.0 if ja3 is not None else 0.0",
+      "window": "flow_window",
+      "threat_relevance": "Presence enables client TLS stack behavioral identification."
+    },
+    {
+      "name": "pkt_size_mean",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Mean packet wire size in bytes across flow",
+      "calculation": "(orig_bytes + resp_bytes) / max(1, orig_pkts + resp_pkts)",
+      "window": "flow_window",
+      "threat_relevance": "Characterizes payload footprint across protocols."
+    },
+    {
+      "name": "pkt_size_std",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Standard deviation of packet sizes",
+      "calculation": "std(packet_sizes)",
+      "window": "flow_window",
+      "threat_relevance": "Distinguishes uniform keepalive beacons from rich interactive sessions."
+    },
+    {
+      "name": "pkt_size_entropy",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Shannon entropy of packet size distribution (SPLT)",
+      "calculation": "-sum(p(size) * log2(p(size)))",
+      "window": "flow_window",
+      "threat_relevance": "Captures structural behavioral variance in encrypted sessions."
+    },
+    {
+      "name": "directionality_ratio",
+      "datatype": "float64",
+      "category": "Encrypted Malware",
+      "meaning": "Ratio of origin (outbound) packets to total session packets",
+      "calculation": "orig_pkts / max(1, orig_pkts + resp_pkts)",
+      "window": "flow_window",
+      "threat_relevance": "Reveals unidirectional command pipelines vs interactive sessions."
+    },
+    {
+      "name": "unique_dst_ports",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Count of distinct destination ports targeted by source IP",
+      "calculation": "len(set(dst_ports))",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Direct indicator of vertical port scanning."
+    },
+    {
+      "name": "unique_dst_hosts",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Count of distinct destination IP hosts targeted by source IP",
+      "calculation": "len(set(dst_hosts))",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Direct indicator of horizontal subnet sweep / reconnaissance."
+    },
+    {
+      "name": "dst_port_fanout",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Rate of unique destination ports contacted per second",
+      "calculation": "unique_dst_ports / max(1e-3, window_duration)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Identifies high-speed automated scanning tools (Nmap/Masscan)."
+    },
+    {
+      "name": "dst_host_fanout",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Rate of unique destination hosts contacted per second",
+      "calculation": "unique_dst_hosts / max(1e-3, window_duration)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Measures horizontal worm spreading or reconnaissance velocity."
+    },
+    {
+      "name": "conn_attempts",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Total connection attempts initiated by source host in window",
+      "calculation": "count(connection_events)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "High volumes indicate aggressive brute-force probing."
+    },
+    {
+      "name": "conn_attempt_rate",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Connection attempts initiated per second by source host",
+      "calculation": "conn_attempts / max(1e-3, window_duration)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Quantifies scanner aggression and throughput."
+    },
+    {
+      "name": "failed_conn_ratio",
+      "datatype": "float64",
+      "category": "Port Scanning",
+      "meaning": "Proportion of connections with unestablished states (S0, REJ, RSTO)",
+      "calculation": "failed_connections / max(1, total_connections)",
+      "window": "sliding_host_window (30.0s)",
+      "threat_relevance": "Port scans yield high failure rates on closed/filtered ports."
+    },
+    {
+      "name": "inbound_bytes",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Total inbound (server-to-client) bytes received in flow",
+      "calculation": "resp_bytes",
+      "window": "flow_window",
+      "threat_relevance": "Baseline for bidirectional volume ratio calculation."
+    },
+    {
+      "name": "outbound_bytes",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Total outbound (client-to-server) bytes transmitted in flow",
+      "calculation": "orig_bytes",
+      "window": "flow_window",
+      "threat_relevance": "Surges flag massive unauthorized data transfer."
+    },
+    {
+      "name": "out_in_byte_ratio",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Ratio of outbound bytes to inbound bytes",
+      "calculation": "orig_bytes / max(1.0, resp_bytes)",
+      "window": "flow_window",
+      "threat_relevance": "Values >> 1.0 reveal asymmetric upload/exfiltration behavior."
+    },
+    {
+      "name": "bytes_per_flow",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Average total bytes per connection session between endpoints",
+      "calculation": "(orig_bytes + resp_bytes)",
+      "window": "flow_window",
+      "threat_relevance": "Distinguishes tiny heartbeat sessions from bulky file transfers."
+    },
+    {
+      "name": "outbound_rate",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Outbound byte transfer rate in bytes per second",
+      "calculation": "orig_bytes / max(1e-3, duration)",
+      "window": "flow_window",
+      "threat_relevance": "High upload throughput signifies active file exfiltration."
+    },
+    {
+      "name": "asymmetric_traffic_score",
+      "datatype": "float64",
+      "category": "Data Exfiltration",
+      "meaning": "Normalized flow volume asymmetry index between -1.0 and +1.0",
+      "calculation": "(orig_bytes - resp_bytes) / max(1.0, orig_bytes + resp_bytes)",
+      "window": "flow_window",
+      "threat_relevance": "+1.0 indicates pure outbound exfiltration; -1.0 indicates pure download."
+    },
+    {
+      "name": "src_out_degree",
+      "datatype": "float64",
+      "category": "Behavioral Graph",
+      "meaning": "Graph out-degree: number of unique target IPs contacted by source",
+      "calculation": "graph.out_degree(src_ip)",
+      "window": "sliding_graph_window (60.0s)",
+      "threat_relevance": "High out-degree flags scanners, worms, and lateral movement."
+    },
+    {
+      "name": "dst_in_degree",
+      "datatype": "float64",
+      "category": "Behavioral Graph",
+      "meaning": "Graph in-degree: number of unique source IPs contacting destination",
+      "calculation": "graph.in_degree(dst_ip)",
+      "window": "sliding_graph_window (60.0s)",
+      "threat_relevance": "Surges mark DDoS attack targets or central enterprise servers."
+    },
+    {
+      "name": "comm_partner_count",
+      "datatype": "float64",
+      "category": "Behavioral Graph",
+      "meaning": "Total unique bipartite communication partners for this endpoint",
+      "calculation": "len(neighbors(endpoint))",
+      "window": "sliding_graph_window (60.0s)",
+      "threat_relevance": "Broad partner fan-out signifies automated discovery activity."
+    },
+    {
+      "name": "graph_fanout_ratio",
+      "datatype": "float64",
+      "category": "Behavioral Graph",
+      "meaning": "Ratio of distinct targets to total connection edges",
+      "calculation": "src_out_degree / max(1, total_outbound_edges)",
+      "window": "sliding_graph_window (60.0s)",
+      "threat_relevance": "Approaches 1.0 during rapid 1-packet-per-host reconnaissance."
+    }
+  ]
+}
