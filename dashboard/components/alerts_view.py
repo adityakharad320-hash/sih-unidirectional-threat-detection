@@ -50,4 +50,4 @@ def render_alerts_view(alerts: List[Dict[str, Any]]):
         })
 
     df = pd.DataFrame(table_rows)
-    st.dataframe(df, use_container_width=True, height=450)
+    st.dataframe(df, width='stretch', height=450)

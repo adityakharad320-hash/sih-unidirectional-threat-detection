@@ -38,7 +38,7 @@ def render_analytics(alerts: List[Dict[str, Any]], stats: Dict[str, Any]):
             hole=0.4
         )
         fig_sev.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_sev, use_container_width=True)
+        st.plotly_chart(fig_sev, width='stretch')
 
     with c2:
         # Detection Methods Breakdown
@@ -52,7 +52,7 @@ def render_analytics(alerts: List[Dict[str, Any]], stats: Dict[str, Any]):
             title="Detection Attribution by Engine Type"
         )
         fig_meth.update_layout(height=320, showlegend=False, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_meth, use_container_width=True)
+        st.plotly_chart(fig_meth, width='stretch')
 
     # Anomaly Score Distribution Histogram
     st.markdown("#### Isolation Forest Anomaly Score Distribution")
@@ -65,4 +65,4 @@ def render_analytics(alerts: List[Dict[str, Any]], stats: Dict[str, Any]):
             title="Isolation Forest Decision Function Separation Across Threats"
         )
         fig_hist.update_layout(height=300, margin=dict(l=20, r=20, t=40, b=20), xaxis_title="Raw IF Score (Lower = More Anomalous)")
-        st.plotly_chart(fig_hist, use_container_width=True)
+        st.plotly_chart(fig_hist, width='stretch')

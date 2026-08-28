@@ -29,7 +29,7 @@ def render_demo_mode(api_client):
         st.caption(f"**Description**: {description}")
         st.caption(f"**Target Sample**: `{pcap_file}`")
 
-        if st.button("🚀 Launch Streaming Replay", type="primary", use_container_width=True):
+        if st.button("🚀 Launch Streaming Replay", type="primary", width='stretch'):
             with st.spinner(f"Replaying {pcap_file} through passive AI pipeline ..."):
                 res = api_client.trigger_replay(pcap_file)
                 st.session_state["last_replay_result"] = res

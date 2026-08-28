@@ -21,7 +21,7 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
         st.info("ℹ️ **System Online (Passive Tap Standby)** — No live traffic has been ingested yet.")
         c_a, c_b = st.columns([1, 2])
         with c_a:
-            if st.button("🚀 Load Sample Threat Telemetry", type="primary", use_container_width=True):
+            if st.button("🚀 Load Sample Threat Telemetry", type="primary", width='stretch'):
                 with st.spinner("Streaming synthetic traffic through passive AI pipeline ..."):
                     client = st.session_state.get("api_client")
                     if client:
@@ -75,7 +75,7 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
             title="Detections by Threat Category"
         )
         fig_bar.update_layout(height=320, showlegend=False, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width='stretch')
 
     with col_right:
         st.markdown("#### Detection Attribution Architecture")
@@ -102,7 +102,7 @@ def render_overview(stats: Dict[str, Any], alerts: list, system_status: Dict[str
             title="Attribution: Known vs. Novel Unseen Threats"
         )
         fig_donut.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_donut, width='stretch')
 
     # Row 3: Live Quick Stream Feed
     if alerts:

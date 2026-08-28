@@ -9,14 +9,23 @@ import time
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-# Always ensure backend is on sys.path first
+# Always ensure backend is on sys.path BEFORE dashboard/
+# Streamlit automatically adds the script directory (dashboard/) to sys.path[0].
+# This causes dashboard/app.py to shadow backend/app/ package → "app is not a package".
+# Fix: strip any dashboard/ entries, then insert backend/ at position 0.
 _HERE = Path(__file__).resolve()
 _ROOT = _HERE.parent.parent          # project root
 _BACKEND = _ROOT / "backend"
+_DASHBOARD = _HERE.parent            # dashboard/
 
-for p in [str(_ROOT), str(_BACKEND)]:
-    if p not in sys.path:
-        sys.path.insert(0, p)
+# Remove any path that resolves to the dashboard directory
+sys.path = [p for p in sys.path if Path(p).resolve() != _DASHBOARD]
+
+# Insert backend first so "from app.X import Y" finds backend/app/ correctly
+if str(_BACKEND) not in sys.path:
+    sys.path.insert(0, str(_BACKEND))
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
 
 logger = logging.getLogger("dashboard_client")
 

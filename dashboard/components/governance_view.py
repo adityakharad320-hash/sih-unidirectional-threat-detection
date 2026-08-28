@@ -23,7 +23,7 @@ def render_governance():
         {"Category": "ENCRYPTED_MALWARE", "Flows": 0, "Share": "0.0%", "Status": "UNSUPPORTED (No labeled data)", "Missing/NaN": "-"},
         {"Category": "DATA_EXFILTRATION", "Flows": 0, "Share": "0.0%", "Status": "UNSUPPORTED (No labeled data)", "Missing/NaN": "-"}
     ]
-    st.dataframe(pd.DataFrame(audit_data), use_container_width=True)
+    st.dataframe(pd.DataFrame(audit_data), width='stretch')
 
     st.markdown("---")
 
@@ -43,7 +43,7 @@ def render_governance():
         "Pred: PORT_SCAN": [0, 0, 21],
         "Per-Class FPR": ["0.0000", "0.0000", "0.0000"]
     }
-    st.dataframe(pd.DataFrame(cm_data), use_container_width=True)
+    st.dataframe(pd.DataFrame(cm_data), width='stretch')
 
     st.markdown("---")
 
