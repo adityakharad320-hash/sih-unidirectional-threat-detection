@@ -9,35 +9,36 @@ import time
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-# Always ensure backend is on sys.path BEFORE dashboard/
-# Streamlit automatically adds the script directory (dashboard/) to sys.path[0].
-# This causes dashboard/app.py to shadow backend/app/ package → "app is not a package".
-# Fix: strip any dashboard/ entries, then insert backend/ at position 0.
+# Bulletproof path setup for Streamlit Cloud and Python 3.14
 _HERE = Path(__file__).resolve()
 _ROOT = _HERE.parent.parent          # project root
 _BACKEND = _ROOT / "backend"
 _DASHBOARD = _HERE.parent            # dashboard/
 
-# Remove any path that resolves to the dashboard directory
+# Strip dashboard dir from sys.path so app.py doesn't shadow backend/app package
 sys.path = [p for p in sys.path if Path(p).resolve() != _DASHBOARD]
 
-# Insert backend first so "from app.X import Y" finds backend/app/ correctly
-if str(_BACKEND) not in sys.path:
-    sys.path.insert(0, str(_BACKEND))
-if str(_ROOT) not in sys.path:
-    sys.path.insert(0, str(_ROOT))
+# Ensure backend and root are at top of sys.path
+for p in [str(_BACKEND), str(_ROOT)]:
+    if p in sys.path:
+        sys.path.remove(p)
+    sys.path.insert(0, p)
+
+# If sys.modules['app'] is not a package with __path__, remove it so backend/app package loads
+if "app" in sys.modules and not hasattr(sys.modules["app"], "__path__"):
+    del sys.modules["app"]
 
 logger = logging.getLogger("dashboard_client")
 
-# ---------------------------------------------------------------------------- #
-# Lazy singleton: one AlertEngine + one HybridInferenceEngine per process      #
-# ---------------------------------------------------------------------------- #
+# Lazy singletons
 _engine = None
 _hybrid = None
 
 def _get_engine():
     global _engine
     if _engine is None:
+        if "app" in sys.modules and not hasattr(sys.modules["app"], "__path__"):
+            del sys.modules["app"]
         from app.alerts.engine import AlertEngine
         _engine = AlertEngine(dedup_window_sec=30.0)
     return _engine
@@ -45,19 +46,17 @@ def _get_engine():
 def _get_hybrid():
     global _hybrid
     if _hybrid is None:
+        if "app" in sys.modules and not hasattr(sys.modules["app"], "__path__"):
+            del sys.modules["app"]
         from app.ml.hybrid_inference import HybridInferenceEngine
         _hybrid = HybridInferenceEngine()
     return _hybrid
 
 
-# ---------------------------------------------------------------------------- #
-# Client                                                                        #
-# ---------------------------------------------------------------------------- #
 class DashboardApiClient:
     def __init__(self, base_url: Optional[str] = None):
         self.base_url = base_url or os.getenv("BACKEND_API_URL", "http://localhost:8000")
 
-    # ---- helpers ----------------------------------------------------------- #
     @property
     def engine(self):
         return _get_engine()
@@ -66,7 +65,6 @@ class DashboardApiClient:
     def hybrid(self):
         return _get_hybrid()
 
-    # ---- public API -------------------------------------------------------- #
     def get_system_status(self) -> Dict[str, Any]:
         try:
             import httpx
@@ -119,7 +117,6 @@ class DashboardApiClient:
         return self.engine.get_statistics().model_dump()
 
     def _stream_staging_dir(self, staging_dir: Path) -> Dict[str, Any]:
-        """Core: stream a pre-staged telemetry dir through the AI pipeline."""
         from app.telemetry.telemetry_streamer import TelemetryStreamer
         from app.telemetry.telemetry_flow_tracker import StreamingTelemetryTracker
         from app.telemetry.telemetry_feature_extractor import TelemetryFeatureExtractor
@@ -145,7 +142,6 @@ class DashboardApiClient:
         }
 
     def load_demo_scenarios(self):
-        """Pre-loads all 6 threat scenarios so the dashboard opens with real data."""
         try:
             from app.config import DATA_DIR
             staging_root = DATA_DIR / "controlled_replay_staging"
