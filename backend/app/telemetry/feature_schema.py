@@ -1,12 +1,15 @@
 """
-Production Telemetry Feature Schema (v2) for SIH 2026 Threat Detection.
+Production Telemetry Feature Schema (v2.1-optimized) for SIH 2026 Threat Detection.
 
-Defines the 42-feature numerical schema generated from Zeek & Suricata telemetry,
+Defines the 54-feature numerical schema generated from Zeek & Suricata telemetry,
 supporting both structured explainability dictionaries and dense NumPy vectors.
 """
 from typing import Dict, List, Any, Optional
 from pydantic import BaseModel, Field
 import numpy as np
+
+FEATURE_SCHEMA_VERSION: str = "v2.1-optimized"
+FEATURE_SCHEMA_DIMENSIONS: int = 54
 
 class FeatureFieldDef(BaseModel):
     name: str

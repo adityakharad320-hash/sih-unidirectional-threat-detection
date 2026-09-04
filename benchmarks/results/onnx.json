@@ -1,0 +1,53 @@
+{
+  "num_trials": 1000,
+  "cold_start_ms": {
+    "sklearn": 61.2898,
+    "onnx": 0.1426
+  },
+  "sklearn": {
+    "input_conversion_ms": {
+      "mean": 0.0031,
+      "p50": 0.0027,
+      "p95": 0.0049,
+      "p99": 0.0096
+    },
+    "inference_ms": {
+      "mean": 76.4033,
+      "p50": 78.0141,
+      "p95": 90.8567,
+      "p99": 102.2472
+    },
+    "end_to_end_ms": {
+      "mean": 76.4064,
+      "p50": 78.0165,
+      "p95": 90.8617,
+      "p99": 102.251
+    },
+    "model_size_bytes": 317131
+  },
+  "onnx": {
+    "input_conversion_ms": {
+      "mean": 0.0095,
+      "p50": 0.0086,
+      "p95": 0.0144,
+      "p99": 0.0226
+    },
+    "inference_ms": {
+      "mean": 0.1268,
+      "p50": 0.121,
+      "p95": 0.1679,
+      "p99": 0.2355
+    },
+    "end_to_end_ms": {
+      "mean": 0.1362,
+      "p50": 0.1309,
+      "p95": 0.1816,
+      "p99": 0.2538
+    },
+    "model_size_bytes": 107627
+  },
+  "speedup_ratio": {
+    "p50_e2e_speedup": 596.0,
+    "mean_e2e_speedup": 560.99
+  }
+}

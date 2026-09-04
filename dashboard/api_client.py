@@ -39,8 +39,12 @@ def _get_engine():
     if _engine is None:
         if "app" in sys.modules and not hasattr(sys.modules["app"], "__path__"):
             del sys.modules["app"]
-        from app.alerts.engine import AlertEngine
-        _engine = AlertEngine(dedup_window_sec=30.0)
+        try:
+            from app.main import global_alert_engine
+            _engine = global_alert_engine
+        except Exception:
+            from app.alerts.engine import AlertEngine
+            _engine = AlertEngine(dedup_window_sec=30.0)
     return _engine
 
 def _get_hybrid():

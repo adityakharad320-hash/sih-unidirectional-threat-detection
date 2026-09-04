@@ -1,0 +1,50 @@
+{
+  "10_trees": {
+    "n_estimators": 10,
+    "macro_precision": 0.9762,
+    "macro_recall": 0.995,
+    "macro_f1": 0.9853,
+    "benign_fpr": 0.0,
+    "model_size_kb": 13.1,
+    "latency_p50_ms": 0.9168,
+    "latency_p95_ms": 1.4442,
+    "latency_p99_ms": 2.3806,
+    "latency_mean_ms": 1.056
+  },
+  "25_trees": {
+    "n_estimators": 25,
+    "macro_precision": 0.9762,
+    "macro_recall": 0.995,
+    "macro_f1": 0.9853,
+    "benign_fpr": 0.0,
+    "model_size_kb": 26.5,
+    "latency_p50_ms": 1.8887,
+    "latency_p95_ms": 3.0304,
+    "latency_p99_ms": 3.2616,
+    "latency_mean_ms": 2.0471
+  },
+  "50_trees": {
+    "n_estimators": 50,
+    "macro_precision": 0.9762,
+    "macro_recall": 0.995,
+    "macro_f1": 0.9853,
+    "benign_fpr": 0.0,
+    "model_size_kb": 49.6,
+    "latency_p50_ms": 3.4283,
+    "latency_p95_ms": 4.7058,
+    "latency_p99_ms": 4.9462,
+    "latency_mean_ms": 3.6541
+  },
+  "100_trees": {
+    "n_estimators": 100,
+    "macro_precision": 0.9762,
+    "macro_recall": 0.995,
+    "macro_f1": 0.9853,
+    "benign_fpr": 0.0,
+    "model_size_kb": 94.5,
+    "latency_p50_ms": 7.0344,
+    "latency_p95_ms": 8.3101,
+    "latency_p99_ms": 9.0591,
+    "latency_mean_ms": 7.0623
+  }
+}

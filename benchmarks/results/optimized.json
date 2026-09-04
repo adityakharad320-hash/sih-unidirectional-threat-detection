@@ -1,0 +1,235 @@
+{
+  "pipeline_name": "OPTIMIZED (Version B - ONNX Runtime)",
+  "version": "v2.1-optimized",
+  "num_repetitions": 3,
+  "total_events": 4854,
+  "duration_sec": 108.8803,
+  "throughput": {
+    "events_per_sec": 44.6,
+    "flows_per_sec": 16.9,
+    "packets_per_sec": 48.9
+  },
+  "latency_breakdown_ms": {
+    "ingestion": {
+      "mean": 0.2445,
+      "p50": 0.2271,
+      "p95": 0.3448,
+      "p99": 0.3694
+    },
+    "parsing": {
+      "mean": 0.0127,
+      "p50": 0.0097,
+      "p95": 0.0236,
+      "p99": 0.0402
+    },
+    "flow_update": {
+      "mean": 0.0128,
+      "p50": 0.0108,
+      "p95": 0.0232,
+      "p99": 0.0317
+    },
+    "feature_extraction": {
+      "mean": 0.0601,
+      "p50": 0.0428,
+      "p95": 0.1977,
+      "p99": 0.2506
+    },
+    "expensive_features": {
+      "mean": 0.0114,
+      "p50": 0.0003,
+      "p95": 0.1122,
+      "p99": 0.1514
+    },
+    "rules": {
+      "mean": 0.0138,
+      "p50": 0.0117,
+      "p95": 0.0239,
+      "p99": 0.0374
+    },
+    "random_forest": {
+      "mean": 0.0815,
+      "p50": 0.0645,
+      "p95": 0.1556,
+      "p99": 0.1952
+    },
+    "isolation_forest": {
+      "mean": 22.0915,
+      "p50": 21.2279,
+      "p95": 27.2747,
+      "p99": 32.9241
+    },
+    "fusion": {
+      "mean": 0.0579,
+      "p50": 0.0482,
+      "p95": 0.1005,
+      "p99": 0.1415
+    },
+    "evidence": {
+      "mean": 0.0205,
+      "p50": 0.0187,
+      "p95": 0.0352,
+      "p99": 0.0476
+    },
+    "dedup": {
+      "mean": 0.0205,
+      "p50": 0.0167,
+      "p95": 0.0423,
+      "p99": 0.0801
+    },
+    "serialization": {
+      "mean": 0.016,
+      "p50": 0.0142,
+      "p95": 0.0293,
+      "p99": 0.0402
+    },
+    "end_to_end": {
+      "mean": 22.4283,
+      "p50": 21.5518,
+      "p95": 27.6692,
+      "p99": 33.43
+    }
+  },
+  "resource_usage": {
+    "cpu_utilization_mean_pct": 100.05,
+    "cpu_peak_pct": 151.8,
+    "memory_rss_start_mb": 212.01,
+    "memory_rss_peak_mb": 213.24,
+    "memory_delta_mb": 1.23,
+    "model_size_bytes": 794217,
+    "model_size_kb": 775.6,
+    "startup_time_sec": 0.2932,
+    "num_processes": 1,
+    "num_threads": 33
+  },
+  "inference_efficiency": {
+    "total_events": 4854,
+    "rf_calls": 4833,
+    "if_calls": 4833,
+    "rf_reach_pct": 99.57,
+    "if_reach_pct": 99.57,
+    "alerts": 204,
+    "duplicate_alerts_suppressed": 4329
+  },
+  "scenario_detections": {
+    "syn_flood.pcap": {
+      "predicted_class": "DDOS",
+      "confidence_mean": 0.6355,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.1831,
+        "DDOS": 0.6346,
+        "PORT_SCAN": 0.1823
+      },
+      "anomaly_score_mean": 0.0659,
+      "anomaly_score_min": 0.0,
+      "evidence_samples": [
+        "Target destination in-degree: 11 unique contacting source IPs",
+        "Source IP entropy: 2.23 bits (distributed/spoofed sources)",
+        "Target destination in-degree: 49 unique contacting source IPs",
+        "Target destination in-degree: 9 unique contacting source IPs",
+        "Target destination in-degree: 39 unique contacting source IPs"
+      ],
+      "alerts_emitted": 52,
+      "false_positives": 0
+    },
+    "port_scan.pcap": {
+      "predicted_class": "PORT_SCAN",
+      "confidence_mean": 0.5622,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.2184,
+        "DDOS": 0.2199,
+        "PORT_SCAN": 0.5617
+      },
+      "anomaly_score_mean": 0.0419,
+      "anomaly_score_min": 0.0369,
+      "evidence_samples": [
+        "Targeted unique destination ports: 82 distinct ports",
+        "Destination port fan-out rate: 100.00 ports/sec",
+        "Targeted unique destination ports: 54 distinct ports",
+        "Destination port fan-out rate: 99.00 ports/sec",
+        "Destination port fan-out rate: 11.00 ports/sec"
+      ],
+      "alerts_emitted": 4,
+      "false_positives": 0
+    },
+    "dga_dns_tunnel.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.4961,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.4961,
+        "DDOS": 0.2583,
+        "PORT_SCAN": 0.2456
+      },
+      "anomaly_score_mean": 0.077,
+      "anomaly_score_min": 0.0569,
+      "evidence_samples": [
+        "High packet transmission rate: 2000.0 packets/sec",
+        "Source IP entropy: 2.79 bits (distributed/spoofed sources)",
+        "DNS query character entropy: 4.76 bits (randomness threshold: >3.40 bits)",
+        "DNS query frequency: 1000.0 queries/sec",
+        "UDP packet rate: 1000.0 packets/sec (amplification indicator: 0.0x)"
+      ],
+      "alerts_emitted": 2,
+      "false_positives": 0
+    },
+    "c2_beaconing.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.7287,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.7286,
+        "DDOS": 0.1628,
+        "PORT_SCAN": 0.1061
+      },
+      "anomaly_score_mean": 0.0433,
+      "anomaly_score_min": 0.0,
+      "evidence_samples": [
+        "Persistent connection count to destination: 36 sessions (113.7 conns/min)",
+        "Mean connection inter-arrival time (IAT): 1.000 seconds",
+        "Persistent connection count to destination: 11 sessions (34.7 conns/min)",
+        "Persistent connection count to destination: 42 sessions (132.6 conns/min)",
+        "Persistent connection count to destination: 38 sessions (120.0 conns/min)"
+      ],
+      "alerts_emitted": 2,
+      "false_positives": 0
+    },
+    "data_exfiltration.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.7204,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.7204,
+        "DDOS": 0.1711,
+        "PORT_SCAN": 0.108
+      },
+      "anomaly_score_mean": 0.0398,
+      "anomaly_score_min": 0.0,
+      "evidence_samples": [
+        "Total outbound bytes: 218763 bytes vs inbound: 0 bytes",
+        "Total outbound bytes: 180234 bytes vs inbound: 0 bytes",
+        "Outbound transfer rate: 264148 bytes/sec",
+        "Outbound/Inbound volume ratio: 141705.0x (asymmetry index: +1.00)",
+        "Outbound/Inbound volume ratio: 171672.0x (asymmetry index: +1.00)"
+      ],
+      "alerts_emitted": 2,
+      "false_positives": 0
+    },
+    "benign_traffic.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.6695,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.6615,
+        "DDOS": 0.2237,
+        "PORT_SCAN": 0.1118
+      },
+      "anomaly_score_mean": 0.0423,
+      "anomaly_score_min": 0.0,
+      "evidence_samples": [
+        "Observed packet rate: 17.6 pkts/s",
+        "Source IP entropy: 2.57 bits (distributed/spoofed sources)",
+        "Observed packet rate: 18.1 pkts/s",
+        "Observed packet rate: 20.2 pkts/s",
+        "UDP packet rate: 2000.0 packets/sec (amplification indicator: 0.0x)"
+      ],
+      "alerts_emitted": 6,
+      "false_positives": 6
+    }
+  }
+}

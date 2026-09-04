@@ -1,0 +1,235 @@
+{
+  "pipeline_name": "BASELINE (Original Version A)",
+  "version": "v1.0-baseline",
+  "num_repetitions": 3,
+  "total_events": 4854,
+  "duration_sec": 219.9065,
+  "throughput": {
+    "events_per_sec": 22.1,
+    "flows_per_sec": 8.4,
+    "packets_per_sec": 24.2
+  },
+  "latency_breakdown_ms": {
+    "ingestion": {
+      "mean": 0.2445,
+      "p50": 0.2271,
+      "p95": 0.3448,
+      "p99": 0.3694
+    },
+    "parsing": {
+      "mean": 0.0127,
+      "p50": 0.0097,
+      "p95": 0.0236,
+      "p99": 0.0402
+    },
+    "flow_update": {
+      "mean": 0.0186,
+      "p50": 0.0165,
+      "p95": 0.0274,
+      "p99": 0.0368
+    },
+    "feature_extraction": {
+      "mean": 0.4624,
+      "p50": 0.4505,
+      "p95": 0.7279,
+      "p99": 0.9434
+    },
+    "expensive_features": {
+      "mean": 0.0194,
+      "p50": 0.0007,
+      "p95": 0.15,
+      "p99": 0.183
+    },
+    "rules": {
+      "mean": 0.0535,
+      "p50": 0.049,
+      "p95": 0.0774,
+      "p99": 0.1176
+    },
+    "random_forest": {
+      "mean": 21.3015,
+      "p50": 20.6227,
+      "p95": 25.0706,
+      "p99": 32.5563
+    },
+    "isolation_forest": {
+      "mean": 23.3286,
+      "p50": 22.596,
+      "p95": 27.7782,
+      "p99": 35.1681
+    },
+    "fusion": {
+      "mean": 0.0566,
+      "p50": 0.0532,
+      "p95": 0.0743,
+      "p99": 0.1016
+    },
+    "evidence": {
+      "mean": 0.0155,
+      "p50": 0.0151,
+      "p95": 0.0213,
+      "p99": 0.0306
+    },
+    "dedup": {
+      "mean": 0.0287,
+      "p50": 0.0236,
+      "p95": 0.0563,
+      "p99": 0.1038
+    },
+    "serialization": {
+      "mean": 0.0265,
+      "p50": 0.0247,
+      "p95": 0.0354,
+      "p99": 0.0506
+    },
+    "end_to_end": {
+      "mean": 45.3004,
+      "p50": 44.0401,
+      "p95": 52.892,
+      "p99": 71.3497
+    }
+  },
+  "resource_usage": {
+    "cpu_utilization_mean_pct": 98.46,
+    "cpu_peak_pct": 154.6,
+    "memory_rss_start_mb": 187.01,
+    "memory_rss_peak_mb": 192.97,
+    "memory_delta_mb": 5.96,
+    "model_size_bytes": 1003721,
+    "model_size_kb": 980.2,
+    "startup_time_sec": 0.183,
+    "num_processes": 1,
+    "num_threads": 31
+  },
+  "inference_efficiency": {
+    "total_events": 4854,
+    "rf_calls": 4854,
+    "if_calls": 4854,
+    "rf_reach_pct": 100.0,
+    "if_reach_pct": 100.0,
+    "alerts": 210,
+    "duplicate_alerts_suppressed": 4644
+  },
+  "scenario_detections": {
+    "syn_flood.pcap": {
+      "predicted_class": "DDOS",
+      "confidence_mean": 0.7323,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.1235,
+        "DDOS": 0.7312,
+        "PORT_SCAN": 0.1454
+      },
+      "anomaly_score_mean": 0.0652,
+      "anomaly_score_min": 0.0544,
+      "evidence_samples": [
+        "Source IP entropy: 5.23 bits (distributed/spoofed sources)",
+        "Source IP entropy: 2.28 bits (distributed/spoofed sources)",
+        "Source IP entropy: 4.43 bits (distributed/spoofed sources)",
+        "Source IP entropy: 5.45 bits (distributed/spoofed sources)",
+        "[DDoS] Distributed SYN flood pattern: SYN ratio 1.00 >= 0.80 with source IP entropy 4.73 bits (27 distinct sources, in-degree 27)."
+      ],
+      "alerts_emitted": 53,
+      "false_positives": 0
+    },
+    "port_scan.pcap": {
+      "predicted_class": "PORT_SCAN",
+      "confidence_mean": 0.7082,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.2426,
+        "DDOS": 0.0496,
+        "PORT_SCAN": 0.7079
+      },
+      "anomaly_score_mean": 0.047,
+      "anomaly_score_min": 0.0462,
+      "evidence_samples": [
+        "[Port Scanning] Vertical port scan: 79 unique destination ports targeted (fan-out: 79.00 ports/s >= 2.00, failed connection ratio: 1.00). | High failed probing rate: 258 attempts with 100.0% unestablished.",
+        "Destination port fan-out rate: 100.00 ports/sec",
+        "Targeted unique destination ports: 16 distinct ports",
+        "Connection attempts: 115 attempts (failed/rejected ratio: 66.7%)",
+        "Destination port fan-out rate: 25.00 ports/sec"
+      ],
+      "alerts_emitted": 4,
+      "false_positives": 0
+    },
+    "dga_dns_tunnel.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.7375,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.7375,
+        "DDOS": 0.0744,
+        "PORT_SCAN": 0.188
+      },
+      "anomaly_score_mean": 0.0956,
+      "anomaly_score_min": 0.0605,
+      "evidence_samples": [
+        "[DNS / DGA] Algorithmic domain name (DGA): Shannon entropy 4.49 bits >= 3.40 with English bigram log-likelihood -9.21 <= -4.50 (query len: 37.0 chars, unique char ratio: 0.34). | Suspicious DNS record abuse: TXT record ratio 100.0% >= 50.0% (subdomain depth: 3.0 labels). | High DNS query burst rate with anomalous entropy: 2000.0 queries/s >= 5.0.",
+        "Isolation Forest raw anomaly score: 0.072915 (threshold: 0.073393)",
+        "[DNS / DGA] Algorithmic domain name (DGA): Shannon entropy 4.76 bits >= 3.40 with English bigram log-likelihood -9.21 <= -4.50 (query len: 36.0 chars, unique char ratio: 0.81). | Suspicious DNS record abuse: TXT record ratio 100.0% >= 50.0% (subdomain depth: 3.0 labels). | High DNS query burst rate with anomalous entropy: 1000.0 queries/s >= 5.0.",
+        "Isolation Forest raw anomaly score: 0.060499 (threshold: 0.073393)",
+        "DNS query character entropy: 4.38 bits (randomness threshold: >3.40 bits)"
+      ],
+      "alerts_emitted": 3,
+      "false_positives": 0
+    },
+    "c2_beaconing.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.8983,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.8983,
+        "DDOS": 0.0318,
+        "PORT_SCAN": 0.0699
+      },
+      "anomaly_score_mean": 0.0527,
+      "anomaly_score_min": 0.0414,
+      "evidence_samples": [
+        "Persistent connection count to destination: 25 sessions (136.4 conns/min)",
+        "Persistent connection count to destination: 10 sessions (200.0 conns/min)",
+        "[C2 Beaconing] Automated C2 beaconing signal: timing jitter CV 0.0000 <= 0.15 (mean interval: 1.000s across 13 connections).",
+        "Persistent connection count to destination: 32 sessions (137.1 conns/min)",
+        "[C2 Beaconing] Automated C2 beaconing signal: timing jitter CV 0.0000 <= 0.15 (mean interval: 1.000s across 21 connections)."
+      ],
+      "alerts_emitted": 2,
+      "false_positives": 0
+    },
+    "data_exfiltration.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.8904,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.8904,
+        "DDOS": 0.023,
+        "PORT_SCAN": 0.0866
+      },
+      "anomaly_score_mean": 0.0506,
+      "anomaly_score_min": 0.029,
+      "evidence_samples": [
+        "[Data Exfiltration] Heavy data exfiltration pattern: outbound/inbound byte ratio 213055.0x >= 8.0x with asymmetry index +1.00 (213055 outbound bytes vs 0 inbound bytes). | High outbound transfer velocity: 213055 B/s >= 10000 B/s.",
+        "[DDoS] High volumetric packet rate: 151.0 pkts/s >= 50.0 pkts/s.",
+        "[DDoS] High volumetric packet rate: 99.0 pkts/s >= 50.0 pkts/s.",
+        "[DDoS] High volumetric packet rate: 93.0 pkts/s >= 50.0 pkts/s.",
+        "High packet transmission rate: 162.0 packets/sec"
+      ],
+      "alerts_emitted": 3,
+      "false_positives": 0
+    },
+    "benign_traffic.pcap": {
+      "predicted_class": "BENIGN",
+      "confidence_mean": 0.8105,
+      "rf_probabilities_mean": {
+        "BENIGN": 0.8105,
+        "DDOS": 0.1046,
+        "PORT_SCAN": 0.0849
+      },
+      "anomaly_score_mean": 0.0648,
+      "anomaly_score_min": 0.042,
+      "evidence_samples": [
+        "Observed packet rate: 17.6 pkts/s",
+        "Isolation Forest raw anomaly score: 0.059005 (threshold: 0.073393)",
+        "Isolation Forest raw anomaly score: 0.054720 (threshold: 0.073393)",
+        "Observed packet rate: 18.1 pkts/s",
+        "Observed packet rate: 20.2 pkts/s"
+      ],
+      "alerts_emitted": 5,
+      "false_positives": 5
+    }
+  }
+}

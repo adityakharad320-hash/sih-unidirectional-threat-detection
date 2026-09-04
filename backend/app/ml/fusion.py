@@ -17,9 +17,11 @@ Decision States:
 """
 import math
 import logging
+from pathlib import Path
 import numpy as np
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, Field
+from app.config import MODELS_DIR
 from app.detectors.models import BehavioralDetectionResult, BehavioralDetectorsConfig
 from app.detectors.behavioral_engine import BehavioralDetectionEngine
 
@@ -78,6 +80,24 @@ class ThreatFusionEngine:
         self.feature_names = rf_artifact["feature_names"]
         self.behavioral_engine = BehavioralDetectionEngine(behavioral_config)
 
+        # ── Fast ONNX Runtime Integration ─────────────────────────────────────
+        # Initialize ONNX inference session once at startup if weights exist
+        self.onnx_session = None
+        self.onnx_input_name = None
+        onnx_file = MODELS_DIR / "random_forest_v2.0.onnx"
+        if onnx_file.exists():
+            try:
+                import onnxruntime as ort
+                sess_opts = ort.SessionOptions()
+                sess_opts.intra_op_num_threads = 1
+                sess_opts.inter_op_num_threads = 1
+                sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+                self.onnx_session = ort.InferenceSession(str(onnx_file), sess_opts, providers=["CPUExecutionProvider"])
+                self.onnx_input_name = self.onnx_session.get_inputs()[0].name
+                logger.info(f"[ThreatFusionEngine] Loaded production ONNX model: {onnx_file}")
+            except Exception as e:
+                logger.warning(f"[ThreatFusionEngine] Failed to load ONNX runtime ({e}); using Scikit-Learn fallback.")
+
     def predict(self, feature_vector, features_dict: Optional[dict] = None) -> FusionResult:
         import time
         t0 = time.perf_counter()
@@ -89,24 +109,42 @@ class ThreatFusionEngine:
         if features_dict is None:
             features_dict = feature_vector.to_dict() if hasattr(feature_vector, "to_dict") else {}
 
-        # ── 1. Random Forest Inference ────────────────────────────────────────
+        # ── 1. Random Forest Inference (ONNX accelerated with Sklearn fallback) ─
         X_raw = np.array([features_dict.get(f, 0.0) for f in self.feature_names], dtype=np.float64).reshape(1, -1)
         X_rf = self.rf_scaler.transform(X_raw)
-        rf_proba = self.rf_model.predict_proba(X_rf)[0]
-        max_idx = int(np.argmax(rf_proba))
-        rf_pred = str(self.rf_classes[max_idx])
-        rf_conf = float(rf_proba[max_idx])
-        rf_proba_dict = {cls: round(float(p), 4) for cls, p in zip(self.rf_classes, rf_proba)}
 
-        # ── 2. Isolation Forest Inference ─────────────────────────────────────
-        X_if = self.if_scaler.transform(X_raw)
-        if_score = float(self.if_model.decision_function(X_if)[0])
-        if_anomalous = bool(if_score < self.if_threshold)
+        if self.onnx_session is not None:
+            outputs = self.onnx_session.run(None, {self.onnx_input_name: X_rf.astype(np.float32)})
+            rf_pred = str(outputs[0][0])
+            prob_vec = outputs[1][0]
+            max_idx = int(np.argmax(prob_vec))
+            rf_conf = float(prob_vec[max_idx])
+            rf_proba_dict = {cls: round(float(p), 4) for cls, p in zip(self.rf_classes, prob_vec)}
+        else:
+            rf_proba = self.rf_model.predict_proba(X_rf)[0]
+            max_idx = int(np.argmax(rf_proba))
+            rf_pred = str(self.rf_classes[max_idx])
+            rf_conf = float(rf_proba[max_idx])
+            rf_proba_dict = {cls: round(float(p), 4) for cls, p in zip(self.rf_classes, rf_proba)}
 
-        # ── 3. Deterministic Behavioral Detectors ─────────────────────────────
+        # ── 2. Deterministic Behavioral Detectors ─────────────────────────────
         det_results = self.behavioral_engine.evaluate_all(feature_vector)
         triggered_dets = [d for d in det_results if d.triggered]
         primary_reason = triggered_dets[0].human_readable_reason if triggered_dets else None
+
+        # ── 3. Selective Isolation Forest Escalation ──────────────────────────
+        # Bypass expensive IF on high-confidence supervised decisions or verified normal flows
+        can_bypass_if = (
+            (rf_pred != "BENIGN" and rf_conf >= RF_CONFIDENCE_THRESHOLD) or
+            (rf_pred == "BENIGN" and rf_conf >= 0.85 and len(triggered_dets) == 0)
+        )
+        if can_bypass_if:
+            if_score = 0.0
+            if_anomalous = False
+        else:
+            X_if = self.if_scaler.transform(X_raw)
+            if_score = float(self.if_model.decision_function(X_if)[0])
+            if_anomalous = bool(if_score < self.if_threshold)
 
         # Category mappings from behavioral triggers
         behavioral_threat_map = {
@@ -119,9 +157,24 @@ class ThreatFusionEngine:
         }
 
         # ── 4. Unified Fusion Decision Matrix ─────────────────────────────────
+        # Sort triggered detectors by specific threat severity so specific anomalies
+        # (exfil, c2, dga, port scan) take precedence over generic volumetric DDoS
+        priority_order = {
+            "DATA_EXFILTRATION": 1,
+            "C2_BEACONING": 2,
+            "DGA_DNS_TUNNELLING": 3,
+            "PORT_SCAN": 4,
+            "ENCRYPTED_MALWARE": 5,
+            "DDOS": 6
+        }
+        sorted_triggered = sorted(
+            triggered_dets,
+            key=lambda d: priority_order.get(behavioral_threat_map.get(d.category, d.category), 99)
+        )
+
         behavioral_override_cat = None
         behavioral_override_score = 0.0
-        for td in triggered_dets:
+        for td in sorted_triggered:
             mapped_cat = behavioral_threat_map.get(td.category, td.category)
             # If supervised model is not confident, or predicts benign, let strong behavioral rule take precedence
             if rf_conf < RF_CONFIDENCE_THRESHOLD or rf_pred == "BENIGN" or mapped_cat == rf_pred:

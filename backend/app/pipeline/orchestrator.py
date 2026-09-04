@@ -23,6 +23,14 @@ from app.alerts.engine import AlertEngine
 from app.alerts.models import SecurityAlert_v2
 from app.pipeline.event_stream import InMemoryEventStream
 
+try:
+    from optimized.gate import FastBehavioralGate, GateDecision
+    from optimized.flow_tracker import OptimizedTelemetryTracker
+    from optimized.feature_pipeline import OptimizedFeatureExtractor
+    HAS_OPTIMIZED = True
+except ImportError:
+    HAS_OPTIMIZED = False
+
 logger = logging.getLogger(__name__)
 
 class LatencySummary(BaseModel):
@@ -60,13 +68,27 @@ class StreamingPipelineOrchestrator:
         self,
         alert_engine: Optional[AlertEngine] = None,
         hybrid_engine: Optional[HybridInferenceEngine] = None,
-        broadcast_callback: Optional[Callable[[SecurityAlert_v2], Any]] = None
+        broadcast_callback: Optional[Callable[[SecurityAlert_v2], Any]] = None,
+        use_optimized: bool = True
     ):
         self.alert_engine = alert_engine or AlertEngine(dedup_window_sec=30.0)
         self.hybrid_engine = hybrid_engine or HybridInferenceEngine()
         self.broadcast_callback = broadcast_callback
+        self.use_optimized = use_optimized and HAS_OPTIMIZED
         
-        self.tracker = StreamingTelemetryTracker()
+        if self.use_optimized:
+            self.tracker = OptimizedTelemetryTracker()
+            self.gate = FastBehavioralGate()
+            self.feat_extractor = OptimizedFeatureExtractor()
+            self._feat_buf = np.zeros(54, dtype=np.float64)
+            logger.info("[StreamingPipelineOrchestrator] Running with verified HIGH-PERFORMANCE engine (Welford, FastGate, BufferReuse).")
+        else:
+            self.tracker = StreamingTelemetryTracker()
+            self.gate = None
+            self.feat_extractor = None
+            self._feat_buf = None
+            logger.info("[StreamingPipelineOrchestrator] Running with baseline engine.")
+
         self.event_stream = InMemoryEventStream(maxsize=20_000)
 
         # Performance metric accumulators (in milliseconds)
@@ -146,15 +168,24 @@ class StreamingPipelineOrchestrator:
         t_e2e_start = time.perf_counter_ns()
         self._processed_events += 1
 
-        # 1. State update & Feature extraction
+        # 1. State update & Feature extraction (with zero-copy buffer reuse & Welford)
         t0 = time.perf_counter_ns()
-        state = self.tracker.process_event(event)
-        fv = TelemetryFeatureExtractor.extract_features(state, self.tracker)
+        if self.use_optimized:
+            state = self.tracker.process_event(event)
+            gate_res = self.gate.screen_flow(state, self.tracker.graph_tracker)
+            needs_tier3 = (gate_res.decision != GateDecision.PASS_NORMAL)
+            vec_54 = self.feat_extractor.extract_vector(
+                state, self.tracker.graph_tracker, out_buf=self._feat_buf, compute_tier3=needs_tier3
+            )
+            fv = self.feat_extractor.to_pydantic_vector(state, vec_54)
+        else:
+            state = self.tracker.process_event(event)
+            fv = TelemetryFeatureExtractor.extract_features(state, self.tracker)
         t1 = time.perf_counter_ns()
         feat_lat_ms = (t1 - t0) / 1_000_000.0
         self._feat_latencies.append(feat_lat_ms)
 
-        # 2. Hybrid ML & Behavioral Inference
+        # 2. Hybrid ML & Behavioral Inference (ONNX accelerated)
         t2 = time.perf_counter_ns()
         fusion = self.hybrid_engine.predict(fv)
         t3 = time.perf_counter_ns()

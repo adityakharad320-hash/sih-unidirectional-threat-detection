@@ -18,10 +18,19 @@ htmlcov/
 .venv
 venv/
 
-# Staging, logs and temporary runtime data (note: controlled_replay_staging is committed intentionally - it's 132 KB of pre-staged demo telemetry)
-data/sih_benchmark_staging/
-data/pipeline_staging/
-data/staging/
+# Staging, logs and temporary runtime data
+# Note: controlled_replay_staging and alerts_demo_staging are intentionally tracked for offline replay
+backend/data/api_pipeline_staging/
+backend/data/benchmark_staging/
+backend/data/hybrid_ml_demo_staging/
+backend/data/ml_staging/
+backend/data/sih_benchmark_staging/
+backend/data/telemetry_features_staging/
+backend/data/telemetry_staging/
+backend/data/deep_profile_staging/
+backend/data/dash_direct_staging/
+backend/data/pipeline_staging/
+backend/data/staging/
 *.tmp
 
 # Streamlit

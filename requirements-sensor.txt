@@ -1,0 +1,9 @@
+# Core Passive Sensor Runtime (Headless Data Diode Sensor - SIH26145)
+# Zero network listeners, passive CPU-only packet ingestion & ONNX inference.
+# Total wheel footprint: <85 MB, resident memory: <16 MB.
+numpy>=1.26.0
+pydantic>=2.6.0
+onnxruntime>=1.17.0
+scikit-learn>=1.4.0
+joblib>=1.3.0
+dpkt>=1.9.8

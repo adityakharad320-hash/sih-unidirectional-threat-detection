@@ -1,0 +1,704 @@
+{
+  "feature_semantics_audit": {
+    "packet_rate": {
+      "index": 0,
+      "mae": 1198.8,
+      "max_error": 1998.0,
+      "is_semantically_identical": false
+    },
+    "byte_rate": {
+      "index": 1,
+      "mae": 64735.2,
+      "max_error": 107892.0,
+      "is_semantically_identical": false
+    },
+    "syn_rate": {
+      "index": 2,
+      "mae": 1199.4,
+      "max_error": 1999.0,
+      "is_semantically_identical": false
+    },
+    "syn_ratio": {
+      "index": 3,
+      "mae": 0.083333,
+      "max_error": 0.5,
+      "is_semantically_identical": false
+    },
+    "ack_ratio": {
+      "index": 4,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "rst_ratio": {
+      "index": 5,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "udp_rate": {
+      "index": 6,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "unique_src_count": {
+      "index": 7,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "src_ip_entropy": {
+      "index": 8,
+      "mae": 2.635599,
+      "max_error": 3.519104,
+      "is_semantically_identical": false
+    },
+    "dest_concentration": {
+      "index": 9,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "byte_amplification_ratio": {
+      "index": 10,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "iat_min": {
+      "index": 11,
+      "mae": 0.02,
+      "max_error": 0.05,
+      "is_semantically_identical": false
+    },
+    "iat_max": {
+      "index": 12,
+      "mae": 0.02,
+      "max_error": 0.05,
+      "is_semantically_identical": false
+    },
+    "iat_mean": {
+      "index": 13,
+      "mae": 0.02,
+      "max_error": 0.05,
+      "is_semantically_identical": false
+    },
+    "iat_std": {
+      "index": 14,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "iat_cv": {
+      "index": 15,
+      "mae": 0.0,
+      "max_error": 2e-06,
+      "is_semantically_identical": true
+    },
+    "periodicity_score": {
+      "index": 16,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "repeated_dst_freq": {
+      "index": 17,
+      "mae": 71712.0,
+      "max_error": 119880.0,
+      "is_semantically_identical": false
+    },
+    "flow_duration": {
+      "index": 18,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "repeated_conn_count": {
+      "index": 19,
+      "mae": 3.6,
+      "max_error": 8.0,
+      "is_semantically_identical": false
+    },
+    "query_len_mean": {
+      "index": 20,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "shannon_entropy_mean": {
+      "index": 21,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "vowel_ratio": {
+      "index": 22,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "consonant_ratio": {
+      "index": 23,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "digit_ratio": {
+      "index": 24,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "unique_char_ratio": {
+      "index": 25,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "subdomain_depth_mean": {
+      "index": 26,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "query_frequency": {
+      "index": 27,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "txt_record_ratio": {
+      "index": 28,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "ngram_log_likelihood": {
+      "index": 29,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "tls_version_num": {
+      "index": 30,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "has_tls_sni": {
+      "index": 31,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "ja3_present": {
+      "index": 32,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "pkt_size_mean": {
+      "index": 33,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "pkt_size_std": {
+      "index": 34,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "pkt_size_entropy": {
+      "index": 35,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "directionality_ratio": {
+      "index": 36,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "unique_dst_ports": {
+      "index": 37,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "unique_dst_hosts": {
+      "index": 38,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "dst_port_fanout": {
+      "index": 39,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "dst_host_fanout": {
+      "index": 40,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "conn_attempts": {
+      "index": 41,
+      "mae": 3.9,
+      "max_error": 8.0,
+      "is_semantically_identical": false
+    },
+    "conn_attempt_rate": {
+      "index": 42,
+      "mae": 1195.5,
+      "max_error": 1998.0,
+      "is_semantically_identical": false
+    },
+    "failed_conn_ratio": {
+      "index": 43,
+      "mae": 0.916667,
+      "max_error": 1.0,
+      "is_semantically_identical": false
+    },
+    "inbound_bytes": {
+      "index": 44,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "outbound_bytes": {
+      "index": 45,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "out_in_byte_ratio": {
+      "index": 46,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "bytes_per_flow": {
+      "index": 47,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "outbound_rate": {
+      "index": 48,
+      "mae": 64735.2,
+      "max_error": 107892.0,
+      "is_semantically_identical": false
+    },
+    "asymmetric_traffic_score": {
+      "index": 49,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "src_out_degree": {
+      "index": 50,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "dst_in_degree": {
+      "index": 51,
+      "mae": 0.0,
+      "max_error": 0.0,
+      "is_semantically_identical": true
+    },
+    "comm_partner_count": {
+      "index": 52,
+      "mae": 40.2,
+      "max_error": 50.0,
+      "is_semantically_identical": false
+    },
+    "graph_fanout_ratio": {
+      "index": 53,
+      "mae": 0.25457,
+      "max_error": 0.98,
+      "is_semantically_identical": false
+    }
+  },
+  "scenario_audit": {
+    "syn_flood.pcap": {
+      "total_events": 1102,
+      "baseline": {
+        "top_rf_predicted_class": "DDOS",
+        "top_fusion_threat_label": "DDOS",
+        "confidence_mean": 0.9468,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.1235,
+          "DDOS": 0.7312,
+          "PORT_SCAN": 0.1454
+        },
+        "isolation_forest_score_mean": 0.0652,
+        "isolation_forest_score_min": 0.0544,
+        "rules_triggered_total": 1484,
+        "distinct_rules_triggered": [
+          "ddos_behavioral_detector",
+          "port_scan_behavioral_detector"
+        ],
+        "alerts_emitted": 53,
+        "duplicates_suppressed": 1049,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.054436 (threshold: 0.073393)",
+          "Isolation Forest raw anomaly score: 0.054436 (threshold: 0.073393)",
+          "SYN packet ratio: 100.0% of total flow packets",
+          "SYN packet ratio: 100.0% of total flow packets"
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "DDOS",
+        "top_fusion_threat_label": "DDOS",
+        "confidence_mean": 0.9443,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.1831,
+          "DDOS": 0.6346,
+          "PORT_SCAN": 0.1823
+        },
+        "isolation_forest_score_mean": 0.0659,
+        "isolation_forest_score_min": 0.0,
+        "gate_decisions": {
+          "PASS_NORMAL": 2,
+          "SUSPICIOUS": 100,
+          "CRITICAL_RULE": 1000
+        },
+        "alerts_emitted": 52,
+        "duplicates_suppressed": 952,
+        "evidence_samples": [
+          "SYN packet ratio: 100.0% of total flow packets",
+          "High packet transmission rate: 1000.0 packets/sec",
+          "Isolation Forest raw anomaly score: 0.071056 (threshold: 0.073393)",
+          "SYN packet ratio: 100.0% of total flow packets"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 99.64,
+        "fusion_label_agreement_pct": 90.74,
+        "confidence_mean_delta": -0.0025,
+        "alert_count_delta": -1,
+        "detection_outcome_equivalent": true
+      }
+    },
+    "port_scan.pcap": {
+      "total_events": 302,
+      "baseline": {
+        "top_rf_predicted_class": "PORT_SCAN",
+        "top_fusion_threat_label": "PORT_SCAN",
+        "confidence_mean": 0.905,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.1544,
+          "DDOS": 0.0511,
+          "PORT_SCAN": 0.7944
+        },
+        "isolation_forest_score_mean": 0.0401,
+        "isolation_forest_score_min": 0.0392,
+        "rules_triggered_total": 280,
+        "distinct_rules_triggered": [
+          "port_scan_behavioral_detector"
+        ],
+        "alerts_emitted": 3,
+        "duplicates_suppressed": 299,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.054436 (threshold: 0.073393)",
+          "Targeted unique destination ports: 2 distinct ports",
+          "Destination port fan-out rate: 2.00 ports/sec",
+          "Isolation Forest raw anomaly score: 0.049392 (threshold: 0.073393)"
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "PORT_SCAN",
+        "top_fusion_threat_label": "PORT_SCAN",
+        "confidence_mean": 0.9208,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.2184,
+          "DDOS": 0.2199,
+          "PORT_SCAN": 0.5617
+        },
+        "isolation_forest_score_mean": 0.0419,
+        "isolation_forest_score_min": 0.0369,
+        "gate_decisions": {
+          "PASS_NORMAL": 0,
+          "SUSPICIOUS": 18,
+          "CRITICAL_RULE": 284
+        },
+        "alerts_emitted": 4,
+        "duplicates_suppressed": 298,
+        "evidence_samples": [
+          "SYN packet ratio: 100.0% of total flow packets",
+          "High packet transmission rate: 1000.0 packets/sec",
+          "Isolation Forest raw anomaly score: 0.071056 (threshold: 0.073393)",
+          "Targeted unique destination ports: 10 distinct ports"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 99.01,
+        "fusion_label_agreement_pct": 89.07,
+        "confidence_mean_delta": 0.0158,
+        "alert_count_delta": 1,
+        "detection_outcome_equivalent": true
+      }
+    },
+    "dga_dns_tunnel.pcap": {
+      "total_events": 24,
+      "baseline": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "DGA_DNS_TUNNELLING",
+        "confidence_mean": 0.8207,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.6328,
+          "DDOS": 0.0943,
+          "PORT_SCAN": 0.2729
+        },
+        "isolation_forest_score_mean": 0.0908,
+        "isolation_forest_score_min": 0.0584,
+        "rules_triggered_total": 16,
+        "distinct_rules_triggered": [
+          "dns_dga_behavioral_detector"
+        ],
+        "alerts_emitted": 3,
+        "duplicates_suppressed": 21,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.058367 (threshold: 0.073393)",
+          "DNS query character entropy: 4.49 bits (randomness threshold: >3.40 bits)",
+          "Average DNS query length: 37.0 characters",
+          "Normal network behavior with balanced bidirectional parameters."
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "DGA_DNS_TUNNELLING",
+        "confidence_mean": 0.9433,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.4961,
+          "DDOS": 0.2583,
+          "PORT_SCAN": 0.2456
+        },
+        "isolation_forest_score_mean": 0.077,
+        "isolation_forest_score_min": 0.0569,
+        "gate_decisions": {
+          "PASS_NORMAL": 0,
+          "SUSPICIOUS": 0,
+          "CRITICAL_RULE": 24
+        },
+        "alerts_emitted": 2,
+        "duplicates_suppressed": 22,
+        "evidence_samples": [
+          "SYN packet ratio: 100.0% of total flow packets",
+          "High packet transmission rate: 1000.0 packets/sec",
+          "DNS query character entropy: 4.49 bits (randomness threshold: >3.40 bits)",
+          "Average DNS query length: 37.0 characters"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 100.0,
+        "fusion_label_agreement_pct": 66.67,
+        "confidence_mean_delta": 0.1226,
+        "alert_count_delta": -1,
+        "detection_outcome_equivalent": true
+      }
+    },
+    "c2_beaconing.pcap": {
+      "total_events": 42,
+      "baseline": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "C2_BEACONING",
+        "confidence_mean": 0.8473,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.7897,
+          "DDOS": 0.0532,
+          "PORT_SCAN": 0.157
+        },
+        "isolation_forest_score_mean": 0.0476,
+        "isolation_forest_score_min": 0.0392,
+        "rules_triggered_total": 36,
+        "distinct_rules_triggered": [
+          "c2_beaconing_behavioral_detector"
+        ],
+        "alerts_emitted": 2,
+        "duplicates_suppressed": 40,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.039165 (threshold: 0.073393)",
+          "Mean connection inter-arrival time (IAT): 1.000 seconds",
+          "Low timing jitter (Coefficient of Variation): 0.0000 (automated heartbeat threshold: <0.15)"
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "C2_BEACONING",
+        "confidence_mean": 0.87,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.7286,
+          "DDOS": 0.1628,
+          "PORT_SCAN": 0.1061
+        },
+        "isolation_forest_score_mean": 0.0433,
+        "isolation_forest_score_min": 0.0,
+        "gate_decisions": {
+          "PASS_NORMAL": 3,
+          "SUSPICIOUS": 39,
+          "CRITICAL_RULE": 0
+        },
+        "alerts_emitted": 2,
+        "duplicates_suppressed": 38,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.050838 (threshold: 0.073393)",
+          "Mean connection inter-arrival time (IAT): 1.000 seconds",
+          "Low timing jitter (Coefficient of Variation): 0.0000 (automated heartbeat threshold: <0.15)"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 100.0,
+        "fusion_label_agreement_pct": 90.48,
+        "confidence_mean_delta": 0.0227,
+        "alert_count_delta": 0,
+        "detection_outcome_equivalent": true
+      }
+    },
+    "data_exfiltration.pcap": {
+      "total_events": 98,
+      "baseline": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "DDOS",
+        "confidence_mean": 0.8242,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.8117,
+          "DDOS": 0.0362,
+          "PORT_SCAN": 0.1521
+        },
+        "isolation_forest_score_mean": 0.0473,
+        "isolation_forest_score_min": 0.0283,
+        "rules_triggered_total": 171,
+        "distinct_rules_triggered": [
+          "data_exfiltration_behavioral_detector",
+          "ddos_behavioral_detector"
+        ],
+        "alerts_emitted": 3,
+        "duplicates_suppressed": 95,
+        "evidence_samples": [
+          "Total outbound bytes: 57188 bytes vs inbound: 0 bytes",
+          "Outbound/Inbound volume ratio: 57188.0x (asymmetry index: +1.00)",
+          "High packet transmission rate: 84.0 packets/sec",
+          "[DDoS] High volumetric packet rate: 84.0 pkts/s >= 50.0 pkts/s."
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "DATA_EXFILTRATION",
+        "confidence_mean": 0.9107,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.7204,
+          "DDOS": 0.1711,
+          "PORT_SCAN": 0.108
+        },
+        "isolation_forest_score_mean": 0.0398,
+        "isolation_forest_score_min": 0.0,
+        "gate_decisions": {
+          "PASS_NORMAL": 2,
+          "SUSPICIOUS": 10,
+          "CRITICAL_RULE": 86
+        },
+        "alerts_emitted": 2,
+        "duplicates_suppressed": 95,
+        "evidence_samples": [
+          "Total outbound bytes: 57188 bytes vs inbound: 0 bytes",
+          "Outbound/Inbound volume ratio: 57188.0x (asymmetry index: +1.00)",
+          "Isolation Forest raw anomaly score: 0.054667 (threshold: 0.073393)",
+          "Observed packet rate: 15.5 pkts/s"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 100.0,
+        "fusion_label_agreement_pct": 12.24,
+        "confidence_mean_delta": 0.0865,
+        "alert_count_delta": -1,
+        "detection_outcome_equivalent": false
+      }
+    },
+    "benign_traffic.pcap": {
+      "total_events": 50,
+      "baseline": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "UNKNOWN_ANOMALY",
+        "confidence_mean": 0.6461,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.7967,
+          "DDOS": 0.0973,
+          "PORT_SCAN": 0.1061
+        },
+        "isolation_forest_score_mean": 0.0629,
+        "isolation_forest_score_min": 0.0417,
+        "rules_triggered_total": 0,
+        "distinct_rules_triggered": [],
+        "alerts_emitted": 5,
+        "duplicates_suppressed": 45,
+        "evidence_samples": [
+          "Isolation Forest raw anomaly score: 0.061916 (threshold: 0.073393)",
+          "Normal network behavior with balanced bidirectional parameters.",
+          "Normal network behavior with balanced bidirectional parameters.",
+          "Isolation Forest raw anomaly score: 0.063849 (threshold: 0.073393)"
+        ]
+      },
+      "optimized": {
+        "top_rf_predicted_class": "BENIGN",
+        "top_fusion_threat_label": "UNKNOWN_ANOMALY",
+        "confidence_mean": 0.709,
+        "rf_probabilities_mean": {
+          "BENIGN": 0.6653,
+          "DDOS": 0.2116,
+          "PORT_SCAN": 0.1201
+        },
+        "isolation_forest_score_mean": 0.0426,
+        "isolation_forest_score_min": 0.0,
+        "gate_decisions": {
+          "PASS_NORMAL": 4,
+          "SUSPICIOUS": 36,
+          "CRITICAL_RULE": 10
+        },
+        "alerts_emitted": 6,
+        "duplicates_suppressed": 38,
+        "evidence_samples": [
+          "SYN packet ratio: 100.0% of total flow packets",
+          "High packet transmission rate: 1000.0 packets/sec",
+          "SYN packet ratio: 100.0% of total flow packets",
+          "High packet transmission rate: 1000.0 packets/sec"
+        ]
+      },
+      "parity_metrics": {
+        "rf_prediction_agreement_pct": 96.0,
+        "fusion_label_agreement_pct": 72.0,
+        "confidence_mean_delta": 0.0629,
+        "alert_count_delta": 1,
+        "detection_outcome_equivalent": true
+      }
+    }
+  },
+  "unidirectional_invariants": {
+    "invariant_1_missing_reverse_not_malicious": {
+      "compliant": true,
+      "detail": "Verified: Missing reverse packets (resp_pkts == 0 or resp_bytes == 0) are standard across data diode links. The system evaluates outbound-to-inbound byte ratios and asymmetry index (+1.00) in conjunction with heavy volumetric thresholds (e.g., >200 KB burst or >10 KB/s rate for Exfiltration; or SYN burst >50 pkts/s for DDoS), never flagging missing reverse traffic alone as malicious."
+    },
+    "invariant_2_flow_termination_inferred": {
+      "compliant": true,
+      "detail": "Verified: On unidirectional taps, return FIN/RST cannot be observed from the protected network. Both Baseline (StreamingTelemetryTracker) and Optimized (OptimizedTelemetryTracker) use time-based sliding window eviction (_prune_stale_flows with configurable idle_timeout_sec = 60s). Flow termination is mathematically inferred from sliding-window inactivity, never assumed or claimed to be observed via TCP flags."
+    },
+    "invariant_3_source_ip_behavioral_context_only": {
+      "compliant": true,
+      "detail": "Verified: Zero static IP blacklists or hardcoded identities exist. Source IPs are used purely as dynamic graph nodes in GraphMetricsTracker to measure in-degree, out-degree, fan-out rates (ports/sec), and Shannon entropy of source distribution across time micro-windows. IP addresses provide behavioral cardinality and structural context, not identity-based verdicts."
+    },
+    "invariant_4_unknown_anomalies_naming": {
+      "compliant": true,
+      "detail": "Verified: Zero instances of 'zero-day exploit' claims exist. Unsupervised isolation forest activations and unclassified behavioral outliers are strictly labeled 'UNKNOWN_ANOMALY' with decision state 'C: UNKNOWN_ANOMALY' and detection method 'MODEL_ANOMALY'. The system avoids sensationalist claims, adhering to scientific reporting standards."
+    },
+    "invariant_5_evidence_explainability": {
+      "compliant": true,
+      "detail": "Verified: Evidence items are strictly parameterized human-readable strings exposing exact empirical measurements, such as 'SYN packet ratio: 100.0% of total flow packets', 'Target destination in-degree: 11 unique contacting source IPs', 'Persistent connection count to destination: 36 sessions', and 'Targeted unique destination ports: 82 distinct ports'. Evidence generation produces fully explainable forensic artifacts directly verifiable by analysts."
+    }
+  }
+}
